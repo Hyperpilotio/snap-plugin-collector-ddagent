@@ -11,11 +11,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// FIXME rewrite here, add flag
-func init() {
-	log.SetLevel(log.DebugLevel)
-}
-
 func NewCollector() *Collector {
 	return &Collector{
 		server: instance.NewDogStatsd(),
@@ -104,11 +99,9 @@ func dispatchMetrics(ctx context.Context, in <-chan *[]plugin.Metric, out chan [
 func (Collector) GetMetricTypes(cfg plugin.Config) ([]plugin.Metric, error) {
 	metrics := []plugin.Metric{}
 
-	// FIXME
 	vals := []string{"dogstatsd"}
 	for _, val := range vals {
 		metric := plugin.Metric{
-			// FIXME
 			Namespace: plugin.NewNamespace("hyperpilot", "ddagent", val),
 		}
 		metrics = append(metrics, metric)

@@ -11,11 +11,6 @@ import (
 
 const HasBeenInitialized = "Server has been initialized"
 
-// FIXME rewrite here, add flag
-func init() {
-	log.SetLevel(log.DebugLevel)
-}
-
 type Server struct {
 	*http.Server
 	isInitialized bool
@@ -41,13 +36,10 @@ func (srv *Server) Run(errCh chan<- error) {
 	if err := srv.ListenAndServe(); err != nil {
 		log.Error(err.Error())
 		errCh <- err
-		// } else {
-		// close(errCh)
 	}
 }
 
 func (srv *Server) Stop() (err error) {
-	// FIXME srv.shutdown()
 	err = srv.Close()
 	srv.isInitialized = false
 	return

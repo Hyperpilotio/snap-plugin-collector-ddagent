@@ -13,11 +13,9 @@ test:
 	${GO_EXECUTABLE} test ${PACKAGES} -v
 
 build:
-	rm ${IMAGE}
 	CGO_ENABLED=0 go build -a -installsuffix cgo -o ${IMAGE}
 
 build-linux:
-	rm ${IMAGE}
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -installsuffix cgo -o ${IMAGE}
 
 complete-build-linux: init build-linux

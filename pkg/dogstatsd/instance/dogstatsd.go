@@ -11,13 +11,7 @@ import (
 	"github.com/hyperpilotio/snap-plugin-collector-ddagent/pkg/dogstatsd"
 	"github.com/hyperpilotio/snap-plugin-collector-ddagent/pkg/dogstatsd/message"
 	"github.com/hyperpilotio/snap-plugin-collector-ddagent/pkg/dogstatsd/server"
-	log "github.com/sirupsen/logrus"
 )
-
-// FIXME rewrite here, add flag
-func init() {
-	log.SetLevel(log.DebugLevel)
-}
 
 type DogStatsd struct {
 	server    *server.Server
@@ -26,11 +20,10 @@ type DogStatsd struct {
 	isStarted bool
 }
 
-func (d *DogStatsd) Start() error {
+func (d *DogStatsd) Start() (err error) {
 	if d.isStarted {
 		return errors.New("Server has been started")
 	}
-	// FIXME error handle
 	errChan := make(chan error)
 	go d.server.Run(errChan)
 
@@ -46,8 +39,7 @@ func (d *DogStatsd) Start() error {
 					parseMetrics(statsdMetrics, &snapMetrics)
 					d.metrics <- &snapMetrics
 				}
-			case <-errChan:
-				// FIXME
+            case err = <-errChan:
 				break
 			case <-d.done:
 				break
